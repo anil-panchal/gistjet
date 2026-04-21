@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+*.lock
+*.log
+.husky/
+
+# spec/design docs maintained outside the code pipeline
+.sdd/
+.claude/
+draft-plan/
+research-files/
+CLAUDE.md

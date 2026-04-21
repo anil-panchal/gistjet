@@ -1,0 +1,28 @@
+# Dependencies & build artifacts
+node_modules/
+dist/
+coverage/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# GistJet workspace state (local only)
+.gistjet.json
+scratch/
+
+# Local Claude Code config
+.claude/
+
+# Design & planning docs (kept locally, not shipped)
+.sdd/
+draft-plan/
+research-files/
+CLAUDE.md

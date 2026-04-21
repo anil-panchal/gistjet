@@ -1,0 +1,3 @@
+# Example config with an embedded GitHub PAT
+GITHUB_TOKEN=ghp_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQ12
+NON_SENSITIVE=hello world

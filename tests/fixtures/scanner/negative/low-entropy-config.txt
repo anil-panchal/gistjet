@@ -1,0 +1,4 @@
+APP_NAME=gistjet
+APP_ENV=production
+DEFAULT_LOCALE=en-US
+FEATURE_FLAGS=alpha,beta,gamma
