@@ -15,13 +15,13 @@
   ],
   "author": "Anil Panchal",
   "license": "MIT",
-  "homepage": "https://github.com/YOUR_USERNAME/gistjet#readme",
+  "homepage": "https://github.com/anil-panchal/gistjet#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/gistjet.git"
+    "url": "git+https://github.com/anil-panchal/gistjet.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/gistjet/issues"
+    "url": "https://github.com/anil-panchal/gistjet/issues"
   },
   "type": "module",
   "bin": {
