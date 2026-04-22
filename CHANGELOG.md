@@ -10,6 +10,12 @@ PATCH for backward-compatible bug fixes.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-04-22
+
+### Fixed
+
+- Claude Code integration snippet: server name must come right after `add`, use `-e` not `--env`
+
 ## [1.0.0] - 2026-04-22
 
 ### Added
