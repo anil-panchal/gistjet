@@ -30,6 +30,10 @@ import { createBootstrapper, type McpServerLike, type TransportLike } from "../f
 import type { ResourceServices } from "../facade/mcp-resource-facade";
 import type { DomainServices } from "../facade/mcp-tool-facade";
 
+import { parseCliArgs } from "./cli-args.js";
+import { formatHelp, formatTtyBanner, formatVersion } from "./cli-messages.js";
+import { GISTJET_VERSION } from "./version.js";
+
 async function main(): Promise<void> {
   const workspaceRoot = process.env.GISTJET_WORKSPACE_ROOT ?? process.cwd();
 
@@ -86,7 +90,7 @@ async function main(): Promise<void> {
     portFactory: () => gistPort,
   });
 
-  const mcpServer = new McpServer({ name: "gistjet", version: "0.0.0" });
+  const mcpServer = new McpServer({ name: "gistjet", version: GISTJET_VERSION });
   const transport = new StdioServerTransport();
 
   const bootstrapper = createBootstrapper({
@@ -110,6 +114,20 @@ async function main(): Promise<void> {
   }
 
   bootstrapper.installProcessHandlers(process, started);
+}
+
+const cliCommand = parseCliArgs(process.argv, process.stdin.isTTY);
+if (cliCommand.kind === "version") {
+  process.stdout.write(formatVersion(GISTJET_VERSION));
+  process.exit(0);
+}
+if (cliCommand.kind === "help") {
+  process.stdout.write(formatHelp(GISTJET_VERSION));
+  process.exit(0);
+}
+if (cliCommand.kind === "tty-banner") {
+  process.stdout.write(formatTtyBanner(GISTJET_VERSION));
+  process.exit(0);
 }
 
 main().catch((cause: unknown) => {

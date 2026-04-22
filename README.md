@@ -15,7 +15,10 @@ It is not a general-purpose gist client. It is a **safe local-scratch publishing
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Quick start with Claude Desktop](#quick-start-with-claude-desktop)
+- [Quick start](#quick-start)
+  - [Claude Desktop](#claude-desktop)
+  - [Claude Code](#claude-code)
+  - [Cursor](#cursor)
 - [MCP tools](#mcp-tools)
   - [init_workspace](#init_workspace)
   - [publish_path_to_gist](#publish_path_to_gist)
@@ -64,6 +67,23 @@ Existing tools (GitHub's official MCP server, `gh gist`, GistPad, IDE plugins) c
 
 ## Installation
 
+### No install (recommended)
+
+Run GistJet directly with `npx` — no cloning or global install required:
+
+```bash
+npx -y gistjet
+```
+
+This downloads and caches the latest published version on first invocation. Ready-to-copy MCP host configurations are in the [Quick start](#quick-start) section below.
+
+### Global install
+
+```bash
+npm install -g gistjet
+gistjet        # starts the MCP server on stdio
+```
+
 ### From source
 
 ```bash
@@ -74,13 +94,6 @@ npm run build
 ```
 
 The build emits an executable at `dist/bin/gistjet.js` with a `#!/usr/bin/env node` shebang.
-
-### As a global binary (after publishing)
-
-```bash
-npm install -g gistjet
-gistjet        # starts the MCP server on stdio
-```
 
 ## Configuration
 
@@ -95,7 +108,9 @@ GistJet reads the following environment variables at startup:
 
 ¹ One of `GISTJET_GITHUB_TOKEN` or `GITHUB_TOKEN` is required. The token is read from the environment only — it is never persisted in `.gistjet.json`.
 
-## Quick start with Claude Desktop
+## Quick start
+
+### Claude Desktop
 
 Add the following to your Claude Desktop config (`claude_desktop_config.json` on macOS lives at `~/Library/Application Support/Claude/claude_desktop_config.json`):
 
@@ -103,25 +118,48 @@ Add the following to your Claude Desktop config (`claude_desktop_config.json` on
 {
   "mcpServers": {
     "gistjet": {
-      "command": "gistjet",
+      "command": "npx",
+      "args": ["-y", "gistjet"],
       "env": {
         "GISTJET_GITHUB_TOKEN": "ghp_your_token_here",
-        "GISTJET_WORKSPACE_ROOT": "/absolute/path/to/your/workspace",
-        "GISTJET_LOG_LEVEL": "info"
+        "GISTJET_WORKSPACE_ROOT": "/absolute/path/to/your/workspace"
       }
     }
   }
 }
 ```
 
-If you are running from source without installing globally, replace the `command` block with:
+Restart Claude Desktop. Then ask the agent to call `init_workspace` for the workspace root — after that, `publish_path_to_gist`, `sync_path_to_gist`, and the rest are available.
 
-```json
-"command": "node",
-"args": ["/absolute/path/to/gistjet/dist/bin/gistjet.js"]
+### Claude Code
+
+```bash
+claude mcp add --transport stdio \
+  --env GISTJET_GITHUB_TOKEN=ghp_your_token_here \
+  --env GISTJET_WORKSPACE_ROOT=/absolute/path/to/your/workspace \
+  gistjet -- npx -y gistjet
 ```
 
-Restart Claude Desktop. Then ask the agent to call `init_workspace` for the workspace root — after that, `publish_path_to_gist`, `sync_path_to_gist`, and the rest are available.
+The `--` separator is required — it separates `claude mcp add` flags from the server command.
+
+### Cursor
+
+Create or update `.cursor/mcp.json` (project-scoped) or `~/.cursor/mcp.json` (global):
+
+```json
+{
+  "mcpServers": {
+    "gistjet": {
+      "command": "npx",
+      "args": ["-y", "gistjet"],
+      "env": {
+        "GISTJET_GITHUB_TOKEN": "ghp_your_token_here",
+        "GISTJET_WORKSPACE_ROOT": "/absolute/path/to/your/workspace"
+      }
+    }
+  }
+}
+```
 
 ---
 

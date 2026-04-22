@@ -8,6 +8,7 @@ const highRiskModuleThreshold = {
 };
 
 export default defineConfig({
+  define: { __GISTJET_VERSION__: '"0.0.0-test"' },
   test: {
     environment: "node",
     globals: false,

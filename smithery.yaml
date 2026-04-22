@@ -1,0 +1,35 @@
+description: >
+  GistJet is a local-workspace-aware MCP server for publishing, syncing, and managing
+  GitHub Gists. Supports publish, sync, list, open, and delete operations on Gists directly
+  from MCP-compatible tools (Claude Desktop, Claude Code, Cursor). Works without a token in
+  read-only mode; requires a GitHub PAT with gist scope for write operations.
+
+startCommand:
+  type: stdio
+
+configSchema:
+  type: object
+  required:
+    - githubToken
+  properties:
+    githubToken:
+      type: string
+      description: >
+        GitHub personal access token (classic with 'gist' scope, or fine-grained
+        with Gist read+write). Required for write tools (publish, sync, delete).
+        Without a token, GistJet starts in read-only mode.
+    workspaceRoot:
+      type: string
+      description: >
+        Absolute path to the workspace directory GistJet should use.
+        Defaults to the current working directory.
+
+commandFunction: |-
+  (config) => ({
+    command: "npx",
+    args: ["-y", "gistjet"],
+    env: {
+      ...(config.githubToken ? { GISTJET_GITHUB_TOKEN: config.githubToken } : {}),
+      ...(config.workspaceRoot ? { GISTJET_WORKSPACE_ROOT: config.workspaceRoot } : {})
+    }
+  })

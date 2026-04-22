@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    name: Publish to npm and create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      # Future upgrade path: replace NPM_TOKEN with npm Trusted Publishing by adding
+      # id-token: write here and using `--provenance` on `npm publish`. See:
+      # https://docs.npmjs.com/trusted-publishers/
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to npm
+        # --ignore-scripts avoids re-running prepublishOnly (lint/typecheck/test/build
+        # already executed as explicit steps above)
+        run: npm publish --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
