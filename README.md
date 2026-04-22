@@ -142,6 +142,18 @@ claude mcp add gistjet --transport stdio \
 
 The server name (`gistjet`) must come right after `add`, before any flags. The `--` separator is required — it separates the flags from the server command.
 
+> **nvm users with a project pinned to Node < 20**: Claude Code inherits the active Node version from your shell. If your project's `.nvmrc` pins to Node 16 or 18, GistJet will fail to start (`structuredClone is not defined`). Fix by editing `~/.claude.json` and adding a `PATH` entry to the gistjet env block that puts Node 20 first:
+>
+> ```json
+> "env": {
+>   "PATH": "/Users/you/.nvm/versions/node/v20.x.x/bin:/usr/local/bin:/usr/bin:/bin",
+>   "GISTJET_GITHUB_TOKEN": "...",
+>   "GISTJET_WORKSPACE_ROOT": "..."
+> }
+> ```
+>
+> Alternatively, run `nvm alias default 20` to make Node 20 the system default.
+
 ### Cursor
 
 Create or update `.cursor/mcp.json` (project-scoped) or `~/.cursor/mcp.json` (global):
