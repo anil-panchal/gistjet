@@ -41,10 +41,10 @@ Claude Desktop (~/.config/Claude/claude_desktop_config.json or
 
 Claude Code:
 
-  claude mcp add --transport stdio \\
-    --env GISTJET_GITHUB_TOKEN=<your-token> \\
-    --env GISTJET_WORKSPACE_ROOT=/path/to/workspace \\
-    gistjet -- npx -y gistjet
+  claude mcp add gistjet --transport stdio \\
+    -e GISTJET_GITHUB_TOKEN=<your-token> \\
+    -e GISTJET_WORKSPACE_ROOT=/path/to/workspace \\
+    -- npx -y gistjet
 
 Cursor (.cursor/mcp.json):
 

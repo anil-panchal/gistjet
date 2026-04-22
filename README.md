@@ -134,13 +134,13 @@ Restart Claude Desktop. Then ask the agent to call `init_workspace` for the work
 ### Claude Code
 
 ```bash
-claude mcp add --transport stdio \
-  --env GISTJET_GITHUB_TOKEN=ghp_your_token_here \
-  --env GISTJET_WORKSPACE_ROOT=/absolute/path/to/your/workspace \
-  gistjet -- npx -y gistjet
+claude mcp add gistjet --transport stdio \
+  -e GISTJET_GITHUB_TOKEN=ghp_your_token_here \
+  -e GISTJET_WORKSPACE_ROOT=/absolute/path/to/your/workspace \
+  -- npx -y gistjet
 ```
 
-The `--` separator is required — it separates `claude mcp add` flags from the server command.
+The server name (`gistjet`) must come right after `add`, before any flags. The `--` separator is required — it separates the flags from the server command.
 
 ### Cursor
 
